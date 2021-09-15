@@ -9,11 +9,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:tip_calculator/main.dart';
+import 'package:tip_calculator/ui/bill_splitter.dart';
 
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
     // Build our app and trigger a frame.
-    await tester.pumpWidget(MyApp());
+    await tester.pumpWidget(BillSplitter());
 
     // Verify that our counter starts at 0.
     expect(find.text('0'), findsOneWidget);
