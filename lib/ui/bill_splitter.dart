@@ -48,7 +48,7 @@ class _BillSplitterState extends State<BillSplitter> {
                     Padding(
                       padding: const EdgeInsets.all(12.0),
                       child: Text(
-                        "\$19.25",
+                        "\$${calculateTotalPerPerson(_billAmount, _personCounter, _tipPercentage)}",
                         style: TextStyle(
                           fontSize: 35.0,
                           fontWeight: FontWeight.bold,
@@ -78,7 +78,7 @@ class _BillSplitterState extends State<BillSplitter> {
                         TextInputType.numberWithOptions(decimal: true),
                     style: TextStyle(color: _purple),
                     decoration: InputDecoration(
-                      prefixText: "Bill Amount",
+                      prefixText: "Bill Amount: ",
                       prefixIcon: Icon(Icons.attach_money),
                     ),
                     onChanged: (String value) {
@@ -167,7 +167,7 @@ class _BillSplitterState extends State<BillSplitter> {
                         ),),
                         Padding(
                           padding: const EdgeInsets.all(18.0),
-                          child: Text("\$50.00", style: TextStyle(
+                          child: Text("\$ ${calculateTotalTip(_billAmount, _personCounter, _tipPercentage)}", style: TextStyle(
                             color: _purple,
                             fontSize: 20.0,
                             fontWeight: FontWeight.bold,
@@ -206,4 +206,23 @@ class _BillSplitterState extends State<BillSplitter> {
       ),
     );
   }
+
+  calculateTotalPerPerson(double billAmount, int splitBy, int tipPercentage){
+    var totalPerPerson = (calculateTotalTip(billAmount, splitBy, tipPercentage) + billAmount) / splitBy;
+    return totalPerPerson.toStringAsFixed(2);
+  }
+
+  calculateTotalTip(double billAmount, int splitBy, int tipPercentage){
+    double totalTip = 0.0;
+
+    if (billAmount < 0 || billAmount.toString().isEmpty){
+      // no go!
+
+    } else {
+      totalTip = (billAmount * tipPercentage) / 100;
+    }
+    return totalTip;
+  }
+
+
 }
