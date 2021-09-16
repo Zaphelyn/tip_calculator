@@ -10,7 +10,7 @@ class BillSplitter extends StatefulWidget {
 }
 
 class _BillSplitterState extends State<BillSplitter> {
-  int _tipPercentage = 0;
+  int _tipPercentage = 5;
   int _personCounter = 1;
   double _billAmount = 0.0;
   Color _purple = HexColor("#6908D6");
@@ -184,11 +184,11 @@ class _BillSplitterState extends State<BillSplitter> {
                         fontWeight: FontWeight.bold,
                       ),),
                       Slider(
-                          min: 0,
-                          max: 100,
+                          min: 5,
+                          max: 40,
                           activeColor: _purple,
                           inactiveColor: Colors.grey,
-                          divisions: 10, // Optional
+                          divisions: 7, // Optional
                           value: _tipPercentage.toDouble(),
                           onChanged: (double newValue) {
                               setState(() {
