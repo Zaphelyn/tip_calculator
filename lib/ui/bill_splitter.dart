@@ -10,7 +10,7 @@ class BillSplitter extends StatefulWidget {
 }
 
 class _BillSplitterState extends State<BillSplitter> {
-  int _tipPercentage = 5;
+  int _tipPercentage = 0;
   int _personCounter = 1;
   double _billAmount = 0.0;
   Color _purple = HexColor("#6908D6");
@@ -18,10 +18,15 @@ class _BillSplitterState extends State<BillSplitter> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        margin: EdgeInsets.only(
-          top: MediaQuery.of(context).size.height * 0.1,
+      appBar: AppBar(
+        title: Center(
+          child: Text("Tip Calculator", style: TextStyle(
+            color: _purple,
+          ),),
         ),
+        backgroundColor: Colors.purple.shade50,
+      ),
+      body: Container(
         alignment: Alignment.center,
         color: Colors.white,
         // Putting UI/children inside of a ListView makes them scrollable
@@ -30,38 +35,7 @@ class _BillSplitterState extends State<BillSplitter> {
           padding: EdgeInsets.all(20.5),
           children: [
             Container(
-              width: 150,
-              height: 150,
-              decoration: BoxDecoration(
-                color: _purple.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(12.0),
-              ),
-              child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text("Total per person", style: TextStyle(
-                      fontWeight: FontWeight.normal,
-                      fontSize: 15.0,
-                      color: _purple,
-                    ),),
-                    Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: Text(
-                        "\$${calculateTotalPerPerson(_billAmount, _personCounter, _tipPercentage)}",
-                        style: TextStyle(
-                          fontSize: 35.0,
-                          fontWeight: FontWeight.bold,
-                          color: _purple,
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            ),
-            Container(
-              margin: EdgeInsets.only(top: 20.0),
+              margin: EdgeInsets.only(top: 25.0),
               padding: EdgeInsets.all(12.0),
               decoration: BoxDecoration(
                 color: Colors.transparent,
@@ -75,11 +49,11 @@ class _BillSplitterState extends State<BillSplitter> {
                 children: [
                   TextField(
                     keyboardType:
-                        TextInputType.numberWithOptions(decimal: true),
+                    TextInputType.numberWithOptions(decimal: true),
                     style: TextStyle(color: _purple),
                     decoration: InputDecoration(
-                      prefixText: "Bill Amount: ",
-                      prefixIcon: Icon(Icons.attach_money),
+                      labelText: "Total Bill Amount: ",
+                      //prefixIcon: Icon(Icons.attach_money),
                     ),
                     onChanged: (String value) {
                       try {
@@ -88,74 +62,6 @@ class _BillSplitterState extends State<BillSplitter> {
                         _billAmount = 0.0;
                       }
                     },
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "Split",
-                        style: TextStyle(
-                          color: Colors.grey.shade700,
-                        ),
-                      ),
-                      Row(
-                        children: [
-                          InkWell(
-                            onTap: () {
-                              setState(() {
-                                if(_personCounter > 1){
-                                  _personCounter--;
-                                }
-                              });
-                            },
-                            child: Container(
-                              height: 40,
-                              width: 40,
-                              margin: EdgeInsets.all(10.0),
-                              decoration: BoxDecoration(
-                                color: _purple.withOpacity(0.1),
-                                borderRadius: BorderRadius.circular(7.0),
-                              ),
-                              child: Center(
-                                child: Text("-", style: TextStyle(
-                                  color: _purple,
-                                  fontSize: 20.0,
-                                  fontWeight: FontWeight.bold,
-                                ),),
-                              ),
-                            ),
-                          ),
-                          Text("$_personCounter", style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20.0,
-                            color: _purple,
-                          ),),
-                          InkWell(
-                            onTap: () {
-                              setState(() {
-                                  _personCounter++;
-                              });
-                            },
-                            child: Container(
-                              height: 40,
-                              width: 40,
-                              margin: EdgeInsets.all(10.0),
-                              decoration: BoxDecoration(
-                                color: _purple.withOpacity(0.1),
-                                borderRadius: BorderRadius.circular(7.0),
-                              ),
-                              child: Center(
-                                child: Text("+", style: TextStyle(
-                                  color: _purple,
-                                  fontSize: 20.0,
-                                  fontWeight: FontWeight.bold,
-                                ),),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top:18.0),
@@ -184,21 +90,125 @@ class _BillSplitterState extends State<BillSplitter> {
                         fontWeight: FontWeight.bold,
                       ),),
                       Slider(
-                          min: 5,
+                          min: 0,
                           max: 40,
                           activeColor: _purple,
                           inactiveColor: Colors.grey,
-                          divisions: 7, // Optional
+                          divisions: 8, // Optional
                           value: _tipPercentage.toDouble(),
                           onChanged: (double newValue) {
-                              setState(() {
-                                _tipPercentage = newValue.round();
-                              });
+                            setState(() {
+                              _tipPercentage = newValue.round();
+                            });
                           }
                       ),
                     ],
                   ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Split how many ways",
+                        style: TextStyle(
+                          color: Colors.grey.shade700,
+                        ),
+                      ),
+                      Row(
+                        children: [
+                          InkWell(
+                            onTap: () {
+                              setState(() {
+                                if(_personCounter > 1){
+                                  _personCounter--;
+                                }
+                              });
+                            },
+                            child: Container(
+                              height: 40,
+                              width: 40,
+                              margin: EdgeInsets.all(10.0),
+                              decoration: BoxDecoration(
+                                color: Colors.purple.shade50,
+                                borderRadius: BorderRadius.circular(7.0),
+                              ),
+                              child: Center(
+                                child: Text("-", style: TextStyle(
+                                  color: _purple,
+                                  fontSize: 20.0,
+                                  fontWeight: FontWeight.bold,
+                                ),),
+                              ),
+                            ),
+                          ),
+                          Text("$_personCounter", style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20.0,
+                            color: _purple,
+                          ),),
+                          InkWell(
+                            onTap: () {
+                              setState(() {
+                                _personCounter++;
+                              });
+                            },
+                            child: Container(
+                              height: 40,
+                              width: 40,
+                              margin: EdgeInsets.all(10.0),
+                              decoration: BoxDecoration(
+                                color: Colors.purple.shade50,
+                                borderRadius: BorderRadius.circular(7.0),
+                              ),
+                              child: Center(
+                                child: Text("+", style: TextStyle(
+                                  color: _purple,
+                                  fontSize: 20.0,
+                                  fontWeight: FontWeight.bold,
+                                ),),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ],
+              ),
+            ),
+            Container(
+              width: 150,
+              height: 150,
+              margin: EdgeInsets.only(top: 20.0),
+              decoration: BoxDecoration(
+                color: Colors.purple.shade50,
+                borderRadius: BorderRadius.circular(12.0),
+              ),
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text("Total per person", style: TextStyle(
+                      fontWeight: FontWeight.normal,
+                      fontSize: 15.0,
+                      color: _purple,
+                    ),),
+                    Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: Text(
+                        "\$${calculateTotalPerPerson(_billAmount, _personCounter, _tipPercentage)}",
+                        style: TextStyle(
+                          fontSize: 35.0,
+                          fontWeight: FontWeight.bold,
+                          color: _purple,
+                        ),
+                      ),
+                    ),
+                    Text("(Bill amount: \$${(_billAmount / _personCounter).toStringAsFixed(2)}  + Tip amount: \$${(calculateTotalTip(_billAmount, _personCounter, _tipPercentage) / _personCounter).toStringAsFixed(2)})",
+                      style: TextStyle(
+                        color: _purple,
+                      ),),
+                  ],
+                ),
               ),
             ),
           ],
