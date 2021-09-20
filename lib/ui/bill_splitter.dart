@@ -56,11 +56,13 @@ class _BillSplitterState extends State<BillSplitter> {
                       //prefixIcon: Icon(Icons.attach_money),
                     ),
                     onChanged: (String value) {
-                      try {
-                        _billAmount = double.parse(value);
-                      } catch (exception) {
-                        _billAmount = 0.0;
-                      }
+                      setState(() {
+                        try {
+                          _billAmount = double.parse(value);
+                        } catch (exception) {
+                          _billAmount = 0.0;
+                        }
+                      });
                     },
                   ),
                   Padding(
